@@ -4,20 +4,24 @@ class ArgumentativeDict(defaultdict):
 	"""
 		A form of defaultdict for which the default takes the key as input.
 
-		Use Cases Are:
+		Use cases might include:
 
-		To implement a cached recursive function:
+		* To use a default value based on the input key.
+		* To limit default behaviour to specific types of keys.
+		* To log/track access attempts for missing keys (with key information).
+		* To implement a cached recursive function:
 
-		fib_dict = ArgumentativeDict(
-			lambda x: 1 if x< 2 else fib_dict[x-1] + fib_dict[x-2]
-		)
-		or locally cached:
 		def fib(x):
 			def i_fib(x):
 					return cache[x-1] + cache[x-2]
 			cache = ArgumentativeDict(i_fib)
 			cache[0] = cache[1] = 1
 			return cache[x]
+
+		or, if preferred:
+		fib_dict = ArgumentativeDict(
+			lambda x: 1 if x< 2 else fib_dict[x-1] + fib_dict[x-2]
+		)
 	"""
 
 	def __missing__(self, key):
