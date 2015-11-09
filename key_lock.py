@@ -4,22 +4,22 @@ from collections import defaultdict
 
 class KeyLock(object):
 	def __init__(self):
-		self.glock = Lock()
-		self.lock_for_key = defaultdict(Lock)
-		self.waiters_for_key = defaultdict(int)
+		self._glock = Lock()
+		self._lock_for_key = defaultdict(Lock)
+		self._waiters_for_key = defaultdict(int)
 
 	@contextmanager
 	def safe_lock(self, key):
 		with self.glock:
-			key_lock = self.lock_for_key[key]
-			self.waiters_for_key[key] += 1
+			key_lock = self._lock_for_key[key]
+			self._waiters_for_key[key] += 1
 		with key_lock:
 			yield
-		with self.glock:
-			self.waiters_for_key[key] -= 1
-			if not self.waiters_for_key[key]:
-				del self.waiters_for_key[key]
-				del self.lock_for_key[key]
+		with self._glock:
+			self._waiters_for_key[key] -= 1
+			if not self._waiters_for_key[key]:
+				del self._waiters_for_key[key]
+				del self._lock_for_key[key]
 
 	def __call__(self, key):
-		return self.safe_lock(key)
+		return self._safe_lock(key)
