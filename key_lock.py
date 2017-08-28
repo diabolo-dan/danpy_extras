@@ -25,8 +25,8 @@ class KeyLock(object):
 		self._waiters_for_key = defaultdict(int)
 
 	@contextmanager
-	def safe_lock(self, key):
-		with self.glock:
+	def _safe_lock(self, key):
+		with self._glock:
 			key_lock = self._lock_for_key[key]
 			self._waiters_for_key[key] += 1
 		with key_lock:
