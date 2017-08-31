@@ -1,5 +1,5 @@
 import unittest
-import key_lock # TODO fix relative import
+from . import key_lock
 import threading
 import time
 

@@ -1,5 +1,5 @@
 import unittest
-import argument_dict # TODO fix relative import
+from . import argument_dict
 
 class TestArgumentDict(unittest.TestCase):
 
