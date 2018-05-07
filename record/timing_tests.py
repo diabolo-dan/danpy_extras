@@ -52,6 +52,15 @@ slot_class = SlotCase(1,2,3)
 	"""
 )
 
-for case in (namedtuple_case, class_case, dict_case, slot_class):
+record_case = CaseSetup(
+	name='record_case',
+	call='record_case.a',
+	setup="""
+import record
+record_case = record.record('record_case', ['a', 'b', 'c'])
+	"""
+)
+
+for case in (namedtuple_case, class_case, dict_case, slot_class, record_case):
 	time = timeit.timeit(case.call, setup=case.setup, number=10**7)
 	print("time for {name} case: {time:.3f}s".format(name=case.name, time=time))
